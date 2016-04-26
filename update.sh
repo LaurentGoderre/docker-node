@@ -25,6 +25,10 @@ for version in "${versions[@]}"; do
 			dockerfile="$version/Dockerfile"
 		fi
 
+		if [[ "$variant" == "alpine" ]] && [[ "$version" == "0.10.*" ]]; then
+			continue
+		fi
+
 		fullVersion="$(curl -sSL --compressed 'https://nodejs.org/dist' | grep '<a href="v'"$version." | sed -E 's!.*<a href="v([^"/]+)/?".*!\1!' | cut -f 3 -d . | sort -n | tail -1)"
 		(
 			cp $template $dockerfile
