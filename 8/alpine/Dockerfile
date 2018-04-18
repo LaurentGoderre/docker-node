@@ -8,6 +8,7 @@ RUN addgroup -g 1000 node \
         libstdc++ \
     && apk add --no-cache --virtual .build-deps \
         binutils-gold \
+        ccache \
         curl \
         g++ \
         gcc \
@@ -37,6 +38,8 @@ RUN addgroup -g 1000 node \
     && grep " node-v$NODE_VERSION.tar.xz\$" SHASUMS256.txt | sha256sum -c - \
     && tar -xf "node-v$NODE_VERSION.tar.xz" \
     && cd "node-v$NODE_VERSION" \
+    && ln -s ccache /usr/local/bin/gcc \
+    && ln -s ccache /usr/local/bin/g++ \
     && ./configure \
     && make -j$(getconf _NPROCESSORS_ONLN) \
     && make install \
@@ -44,6 +47,8 @@ RUN addgroup -g 1000 node \
     && cd .. \
     && rm -Rf "node-v$NODE_VERSION" \
     && rm "node-v$NODE_VERSION.tar.xz" SHASUMS256.txt.asc SHASUMS256.txt
+    && rm /usr/local/bin/gcc \
+    && rm /usr/local/bin/g++
 
 ENV YARN_VERSION 1.5.1
 

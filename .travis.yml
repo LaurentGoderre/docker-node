@@ -3,7 +3,9 @@
 dist: trusty
 sudo: false
 
-language: generic
+language: c
+
+cache: ccache
 
 services:
     - docker
@@ -173,4 +175,3 @@ jobs:
       env:
          - NODE_VERSION: "chakracore/8"
          - VARIANT: "default"
-

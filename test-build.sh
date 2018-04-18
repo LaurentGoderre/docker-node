@@ -38,7 +38,7 @@ function build () {
   info "Build of $full_tag succeeded."
 
   info "Testing $full_tag"
-  docker run --rm -v "$PWD/test-image.sh:/usr/local/bin/test.sh" node:"$full_tag" test.sh "$full_version"
+  docker run --rm -v "$HOME/.ccache:/root/.ccache" -v "$PWD/test-image.sh:/usr/local/bin/test.sh" node:"$full_tag" test.sh "$full_version"
 }
 
 cd "$(cd "${0%/*}" && pwd -P)" || exit;
