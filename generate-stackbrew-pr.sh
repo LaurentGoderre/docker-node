@@ -7,7 +7,7 @@ if [ -z "${1}" ]; then
   COMMIT_ID="${TRAVIS_COMMIT}"
   COMMIT_MESSAGE="${TRAVIS_COMMIT_MESSAGE}"
   BRANCH_NAME="travis-${TRAVIS_BUILD_ID}"
-  GITHUB_USERNAME="nodejs-github-bot"
+  GITHUB_USERNAME="${AUTOPR_GITHUB_USERNAME:-nodejs-github-bot}"
 else
   COMMIT_ID="${1}"
   COMMIT_MESSAGE="$(git show -s --format=%B "${COMMIT_ID}")"
@@ -27,8 +27,8 @@ fi
 IMAGES_FILE="library/node"
 REPO_NAME="official-images"
 ORIGIN_SLUG="${GITHUB_USERNAME}/${REPO_NAME}"
-UPSTREAM_SLUG="docker-library/${REPO_NAME}"
-DOCKER_SLUG="nodejs/docker-node"
+UPSTREAM_SLUG="${AUTOPR_UPSTREAM:-docker-library}/${REPO_NAME}"
+DOCKER_SLUG="${TRAVIS_REPO_SLUG:-nodejs/docker-node}"
 gitpath="../${REPO_NAME}"
 
 function auth_header() {
