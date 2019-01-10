@@ -44,27 +44,27 @@ jobs:
         - TEST=mardown_lint
 
   include:
-    - stage: Test
-      name: Markdown link check
-      env:
-        - TEST=mardown_lint
-      language: node_js
-      node_js:
-        - lts/*
-      install:
-        - npm i -g markdown-link-check
-      script:
-        - find . -name "*.md" | xargs -n 1 markdown-link-check
+    # - stage: Test
+    #   name: Markdown link check
+    #   env:
+    #     - TEST=mardown_lint
+    #   language: node_js
+    #   node_js:
+    #     - lts/*
+    #   install:
+    #     - npm i -g markdown-link-check
+    #   script:
+    #     - find . -name "*.md" | xargs -n 1 markdown-link-check
 
-    - stage: Test
-      name: Editor Config check
-      language: node_js
-      node_js:
-        - lts/*
-      install:
-        - npm i -g eclint
-      script:
-        - eclint check
+    # - stage: Test
+    #   name: Editor Config check
+    #   language: node_js
+    #   node_js:
+    #     - lts/*
+    #   install:
+    #     - npm i -g eclint
+    #   script:
+    #     - eclint check
 
     - stage: Test
       name: Doc Toc Check
@@ -88,11 +88,11 @@ jobs:
       name: Shell Check
       script: shellcheck *.sh
 
-    - stage: Test
-      name: .travis.yml and travis.yml.template consistency
-      script:
-        - ./update.sh -t
-        - git diff --stat --exit-code .travis.yml
+    # - stage: Test
+    #   name: .travis.yml and travis.yml.template consistency
+    #   script:
+    #     - ./update.sh -t
+    #     - git diff --stat --exit-code .travis.yml
 
     - stage: Deploy
       script: ./generate-stackbrew-pr.sh
@@ -113,12 +113,12 @@ jobs:
         - NODE_VERSION="10"
         - VARIANT="jessie-slim"
 
-    - stage: Build
-      before_script: *auto_skip
-      name: 10 on alpine
-      env:
-        - NODE_VERSION="10"
-        - VARIANT="alpine"
+    # - stage: Build
+    #   before_script: *auto_skip
+    #   name: 10 on alpine
+    #   env:
+    #     - NODE_VERSION="10"
+    #     - VARIANT="alpine"
 
     - stage: Build
       before_script: *auto_skip
@@ -134,12 +134,12 @@ jobs:
         - NODE_VERSION="10"
         - VARIANT="stretch-slim"
 
-    - stage: Build
-      before_script: *auto_skip
-      name: 11 on alpine
-      env:
-        - NODE_VERSION="11"
-        - VARIANT="alpine"
+    # - stage: Build
+    #   before_script: *auto_skip
+    #   name: 11 on alpine
+    #   env:
+    #     - NODE_VERSION="11"
+    #     - VARIANT="alpine"
 
     - stage: Build
       before_script: *auto_skip
@@ -169,12 +169,12 @@ jobs:
         - NODE_VERSION="6"
         - VARIANT="jessie-slim"
 
-    - stage: Build
-      before_script: *auto_skip
-      name: 6 on alpine
-      env:
-        - NODE_VERSION="6"
-        - VARIANT="alpine"
+    # - stage: Build
+    #   before_script: *auto_skip
+    #   name: 6 on alpine
+    #   env:
+    #     - NODE_VERSION="6"
+    #     - VARIANT="alpine"
 
     - stage: Build
       before_script: *auto_skip
@@ -211,12 +211,12 @@ jobs:
         - NODE_VERSION="8"
         - VARIANT="jessie-slim"
 
-    - stage: Build
-      before_script: *auto_skip
-      name: 8 on alpine
-      env:
-        - NODE_VERSION="8"
-        - VARIANT="alpine"
+    # - stage: Build
+    #   before_script: *auto_skip
+    #   name: 8 on alpine
+    #   env:
+    #     - NODE_VERSION="8"
+    #     - VARIANT="alpine"
 
     - stage: Build
       before_script: *auto_skip
