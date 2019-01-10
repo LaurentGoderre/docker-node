@@ -57,10 +57,11 @@ function permission_check() {
 }
 
 function setup_git_author() {
-  GIT_AUTHOR_NAME="$(git show -s --format="%aN" "${COMMIT_ID}")"
-  GIT_AUTHOR_EMAIL="$(git show -s --format="%aE" "${COMMIT_ID}")"
-  GIT_COMMITTER_NAME="$(git show -s --format="%cN" "${COMMIT_ID}")"
-  GIT_COMMITTER_EMAIL="$(git show -s --format="%cN" "${COMMIT_ID}")"
+  # Set Git User Info
+  GIT_AUTHOR_NAME="Node.js GitHub Bot"
+  GIT_AUTHOR_EMAIL="gh_bot@nodejs.org"
+  GIT_COMMITTER_NAME="Node.js GitHub Bot"
+  GIT_COMMITTER_EMAIL="gh_bot@nodejs.org"
 
   export GIT_AUTHOR_NAME GIT_AUTHOR_EMAIL GIT_COMMITTER_NAME GIT_COMMITTER_EMAIL
 }
@@ -93,7 +94,7 @@ if images_updated "${COMMIT_ID}"; then
   permission_check
 
   # Set Git User Info
-  setup_git_author
+  [ -z "$(git config user.name)" ] && [ -z "$GIT_AUTHOR_NAME" ] && setup_git_author
 
   info "Cloning..."
   git clone --depth 50 "https://github.com/${UPSTREAM_SLUG}.git" ${gitpath} 2> /dev/null
