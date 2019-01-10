@@ -74,10 +74,10 @@ function pr_payload() {
   local escaped_message
   escaped_message="$(echo "${COMMIT_MESSAGE}" | sed -E -e "s/\"/\\\\\"/g")"
   echo "{
-    'title': 'Node: ${escaped_message}',
-    'body': 'Commit: nodejs/docker-node@${COMMIT_ID}',
-    'head': '${GITHUB_USERNAME}:${BRANCH_NAME}',
-    'base': 'master'
+    \"title\": \"Node: ${escaped_message}\",
+    \"body\" : \"Commit: nodejs/docker-node@${COMMIT_ID}\",
+    \"head\" : \"${GITHUB_USERNAME}:${BRANCH_NAME}\",
+    \"base\": \"master\"
   }"
 }
 
@@ -85,7 +85,7 @@ function comment_payload() {
   local pr_url
   pr_url="${1}"
   echo "{
-    'body': 'Created PR to the ${REPO_NAME} repo (${pr_url})'
+    \"body\": \"Created PR to the ${REPO_NAME} repo (${pr_url})\"
   }"
 }
 
