@@ -3,15 +3,16 @@
 set -e
 . functions.sh
 
-if [ -z "${1}" ]; then
-  COMMIT_ID="${TRAVIS_COMMIT}"
+COMMIT_RANGE="${1}"
+COMMIT_ID="$(git show -s --format="%H" "${COMMIT_RANGE}" | tail -n 1)"
+
+if [ ! -z "$TRAVIS" ]; then
   COMMIT_MESSAGE="${TRAVIS_COMMIT_MESSAGE}"
   BRANCH_NAME="travis-${TRAVIS_BUILD_ID}"
   GITHUB_USERNAME="${AUTOPR_GITHUB_USERNAME:-nodejs-github-bot}"
 else
-  COMMIT_ID="${1}"
   COMMIT_MESSAGE="$(git show -s --format=%B "${COMMIT_ID}")"
-  BRANCH_NAME="travis-$(date +%s)"
+  BRANCH_NAME="autopr-$(date +%s)"
   if [[ "$(git remote get-url origin)" =~ github.com/([^/]*)/docker-node.git ]]; then
     GITHUB_USERNAME="${BASH_REMATCH[1]}"
   fi
@@ -72,10 +73,19 @@ function message() {
 
 function pr_payload() {
   local escaped_message
+  local body
+
   escaped_message="$(echo "${COMMIT_MESSAGE}" | sed -E -e "s/\"/\\\\\"/g")"
+
+  if [ ! -z "${PR_NUMBER}" ]; then
+    body="Commit: ${DOCKER_SLUG}#${PR_NUMBER}"
+  else
+    body="Commit: ${DOCKER_SLUG}@${COMMIT_RANGE}"
+  fi
+
   echo "{
     \"title\": \"Node: ${escaped_message}\",
-    \"body\" : \"Commit: nodejs/docker-node@${COMMIT_ID}\",
+    \"body\" : \"${body}\",
     \"head\" : \"${GITHUB_USERNAME}:${BRANCH_NAME}\",
     \"base\": \"master\"
   }"
@@ -89,7 +99,7 @@ function comment_payload() {
   }"
 }
 
-if images_updated "${COMMIT_ID}"; then
+if images_updated "${COMMIT_RANGE}"; then
 
   permission_check
 
