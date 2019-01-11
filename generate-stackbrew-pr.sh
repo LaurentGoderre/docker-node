@@ -109,7 +109,8 @@ if images_updated "${COMMIT_ID}"; then
   git commit -m "$(message)"
 
   info "Pushing..."
-  git push "https://${GITHUB_API_TOKEN}:x-oauth-basic@github.com/${ORIGIN_SLUG}.git" -f "${BRANCH_NAME}" 2> /dev/null || fatal "Error pushing the updated stackbrew"
+  git fetch --unshallow "https://github.com/${ORIGIN_SLUG}.git"
+  git push "https://${GITHUB_API_TOKEN}:x-oauth-basic@github.com/${ORIGIN_SLUG}.git" -f "${BRANCH_NAME}" || fatal "Error pushing the updated stackbrew"
 
   cd - && rm -rf ${gitpath}
 
